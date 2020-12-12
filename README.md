@@ -1,4 +1,4 @@
-# mui-data-table
+# react-mui-data-table
 
 > Eash to use DataTable library using ReactJS &amp; MaterialUI
 
@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save mui-data-table
+npm install --save react-mui-data-table
 ```
 
 ## Usage
@@ -15,8 +15,8 @@ npm install --save mui-data-table
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'mui-data-table'
-import 'mui-data-table/dist/index.css'
+import MyComponent from 'react-mui-data-table'
+import 'react-mui-data-table/dist/index.css'
 
 class Example extends Component {
   render() {

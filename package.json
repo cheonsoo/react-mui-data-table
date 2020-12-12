@@ -1,10 +1,10 @@
 {
-  "name": "mui-data-table",
+  "name": "react-mui-data-table",
   "version": "1.0.0",
   "description": "Eash to use DataTable library using ReactJS &amp; MaterialUI",
   "author": "",
   "license": "MIT",
-  "repository": "https://github.com/cheonsoo/mui-data-table.git",
+  "repository": "https://github.com/cheonsoo/react-mui-data-table.git",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
