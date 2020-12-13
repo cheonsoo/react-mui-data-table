@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import 'mui-data-table/dist/index.css'
+import 'mui-data-table/dist/index.css';
 
-import DataTable from './components/DataTable'
+import DataTable from './components/DataTable2';
 
 const App = () => {
-  return <DataTable />
-}
+  return <DataTable />;
+};
 
-export default App
+export default App;

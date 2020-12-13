@@ -1,19 +1,3 @@
-# react-mui-data-table
-
-> Eash to use DataTable library using ReactJS &amp; MaterialUI
-Support row editing (Textbox & Combobox)
-
-[![NPM](https://img.shields.io/npm/v/mui-data-table.svg)](https://www.npmjs.com/package/mui-data-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
-## Install
-
-```bash
-npm install --save react-mui-data-table
-```
-
-## Usage
-
-```jsx
 import React from 'react';
 import { MUITable } from 'mui-data-table';
 import { makeStyles } from '@material-ui/core/styles';
@@ -160,9 +144,3 @@ const DataTable = () => {
 };
 
 export default DataTable;
-
-```
-
-## License
-
-MIT © [](https://github.com/)
