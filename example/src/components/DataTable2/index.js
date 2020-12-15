@@ -106,8 +106,10 @@ const DataTable = () => {
   const classes = useStyles();
 
   const getItems = () => {
+    return [];
+
     const items = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 25; i++) {
       let o = {
         _id: `ID ${i}`,
         col1: `COL1 ${i}`,
@@ -130,13 +132,28 @@ const DataTable = () => {
   return (
     <div
       className='mui-data-table-container'
-      style={{ width: '1200px', height: '400px' }}
+      style={{ width: '1200px', height: '1000px', padding: '20px' }}
     >
       <MUITable
         className='custom-mui-data-table'
-        customStyle={classes}
+        // customStyle={classes}
+        checkBox={true}
         items={getItems()}
         columns={COLUMNS}
+        count={true}
+        pagination={true}
+        // labelRowsPerPage={({ rowsPerPage }) =>
+        //   `한번에 보여줄 개수 (${rowsPerPage})`
+        // }
+        // labelItemCount={(items, rowsPerPage, page) => {
+        //   return `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
+        //     rowsPerPage * page + rowsPerPage
+        //   }`;
+        // }}
+        // labelRowsPerPage='한번에 보여줄 개수'
+        // labelDisplayedRows={({ page, rowsPerPage }) =>
+        //   `${page}, ${rowsPerPage}`
+        // }
         handleData={handleData}
       />
     </div>

@@ -1,18 +1,16 @@
-.empty-data {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  // display: block;
-  // margin: 0 auto;
-}
-
-.empty-data-container {
-  width: 100%;
+.rmdt-row-no-data-icon {
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-color: red;
+
+  .rmdt-row-no-data-icon-svg {
+    height: 400px;
+    svg {
+      font-size: 100px
+    }
+  }
+
+  .rmdt-row-no-data-icon-label {
+    font-weight: bold;
+    font-size: 24px;
+  }
 }

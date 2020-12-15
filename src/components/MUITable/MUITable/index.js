@@ -12,10 +12,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import CellEditable from '../CellEditable';
 import CellComboBox from '../CellComboBox';
+import EmptyData from '../../common/EmptyData';
 
 import useStyles from './muTableCommon.js';
-
-import EmptyData from '../../common/EmptyData/EmptyDataDiv';
 
 function MUITable({
   className = '',
@@ -30,7 +29,8 @@ function MUITable({
   onClickRow = () => {},
   onCheck = () => {},
   onCheckAll = () => {},
-  handleData = () => {}
+  handleData = () => {},
+  ...others
 }) {
   const classes = customStyle || useStyles();
 
@@ -44,21 +44,21 @@ function MUITable({
     setRows(items);
   }, [items]);
 
-  const setRowsByPagination = () => {
-    if (pagination)
-      setRows(rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage));
-    else setRows(rows);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    // setRowsByPagination();
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-    setRowsByPagination();
+    const _items = items.slice();
+    const _page = 0;
+    const _rowsPerPage = event.target.value;
+
+    setRowsPerPage(_rowsPerPage);
+    setPage(_page);
+    setRows(_items);
+
+    // if (pagination) setRows(_items.slice(_page * _rowsPerPage, _page * _rowsPerPage + _rowsPerPage));
+    // else setRows(_items);
   };
 
   const handleSelect = (rowId) => {
@@ -117,29 +117,33 @@ function MUITable({
           } else if (_column.editType.toLowerCase() === 'combobox') {
             return renderTableCellComboBox(_value, _column, _row);
           } else {
-            return _value;
+            return (
+              <div className='rmdt-table-body-row-cell-item'>{_value}</div>
+            );
           }
         } else {
-          return _value;
+          return <div className='rmdt-table-body-row-cell-item'>{_value}</div>;
         }
       } catch (e) {
         console.log(e);
-        return _value;
+        return <div className='rmdt-table-body-row-cell-item'>{_value}</div>;
       }
     };
 
     const renderTableCellTextInput = (_value, _column, _row) => {
       try {
         return (
-          <CellEditable
-            value={_value}
-            column={_column}
-            row={_row}
-            handleData={(data) => {
-              _row[_column._id] = data;
-              handleData(_row);
-            }}
-          />
+          <div className='rmdt-table-body-row-cell-item'>
+            <CellEditable
+              value={_value}
+              column={_column}
+              row={_row}
+              handleData={(data) => {
+                _row[_column._id] = data;
+                handleData(_row);
+              }}
+            />
+          </div>
         );
       } catch (e) {
         console.log(e);
@@ -151,16 +155,18 @@ function MUITable({
       try {
         const COMBOBOX_ITEMS = _column.items;
         return (
-          <CellComboBox
-            value={_value}
-            column={_column}
-            items={COMBOBOX_ITEMS}
-            row={_row}
-            handleData={(data) => {
-              _row[_column._id] = data.key;
-              handleData(row);
-            }}
-          />
+          <div className='rmdt-table-body-row-cell-item'>
+            <CellComboBox
+              value={_value}
+              column={_column}
+              items={COMBOBOX_ITEMS}
+              row={_row}
+              handleData={(data) => {
+                _row[_column._id] = data.key;
+                handleData(row);
+              }}
+            />
+          </div>
         );
       } catch (e) {
         console.log(e);
@@ -170,20 +176,26 @@ function MUITable({
 
     let value = row[column._id];
     value = column.format ? column.format(value) : value;
+    let customWidth = {};
+    if (column.width) {
+      customWidth = {
+        width: column.width
+      };
+    }
     return (
       <TableCell
+        className='rmdt-table-body-row-cell'
         key={column._id}
         align={column.align}
-        style={{
-          width: column.width,
-          minWidth: column.width,
-          maxWidth: column.width
-        }}
+        style={customWidth}
       >
         {column.subHeader ? (
-          <div className='row-with-subHeader'>
+          <div className='rmdt-table-body-row-cell-subHeader'>
             {column.subHeader.map((sub, idx) => (
-              <div className='row-col' key={idx}>
+              <div
+                className='rmdt-table-body-row-cell-subHeader-item'
+                key={idx}
+              >
                 {row[sub._id]}
               </div>
             ))}
@@ -195,19 +207,54 @@ function MUITable({
     );
   };
 
+  const renderNoData = () => {
+    return (
+      <TableRow hover role='checkbox' tabIndex={-1}>
+        <TableCell
+          className='rmdt-row-no-data'
+          align='center'
+          colSpan={Object.keys(columns).length}
+        >
+          <EmptyData />
+        </TableCell>
+      </TableRow>
+    );
+  };
+
+  const renderItemCount = (items, rowsPerPage, page) => {
+    return (
+      <div>
+        전체 {items.length} 건 중 {rowsPerPage * page + 1} ~{' '}
+        {rowsPerPage * page + rowsPerPage}
+      </div>
+    );
+  };
+
+  // ({ page }) =>
+  //                 `${Math.ceil(items.length / rowsPerPage)} 페이지 중 ${
+  //                   page + 1
+  //                 }`
+  const renderPaginationInfo = ({ page, rowsPerPage }) => {
+    return `${Math.ceil(items.length / rowsPerPage)} 페이지 중 ${page + 1}`;
+  };
+
+  const renderLabelRowsPerPage = ({ rowsPerPage }) => {
+    console.log(`### rowsPerPage: ${rowsPerPage}`);
+    // return <div>{rowsPerPage} 개씩 보기</div>;
+    return 'fjdksljfkljdksfljkl';
+  };
+
   return (
-    // <Paper className={[classes.root, className]}>
-    <Paper className={classes.root}>
-      <TableContainer
-        className={classes.container}
-        // className={`${className} ${classes.container} muTableCommon`}
-        style={style}
-      >
-        <Table stickyHeader aria-label='sticky table'>
-          <TableHead>
-            <TableRow>
+    <Paper className={`${classes.rmdt} rmdt ${className || ''}`} style={style}>
+      <TableContainer className='rmdt-conatiner'>
+        <Table className='rmdt-table' stickyHeader aria-label='sticky table'>
+          <TableHead className='rmdt-table-header'>
+            <TableRow className='rmdt-table-header-row'>
               {checkBox && (
-                <TableCell padding='checkbox'>
+                <TableCell
+                  className='rmdt-table-header-row-cell checkBox'
+                  padding='checkbox'
+                >
                   <Checkbox
                     checked={isChkAll}
                     onClick={() => onSelectAllClick(!isChkAll)}
@@ -219,27 +266,30 @@ function MUITable({
                 (column) =>
                   isShowColumn(column) && (
                     <TableCell
+                      className='rmdt-table-header-row-cell'
                       key={column._id}
                       align={column.align}
-                      style={{
-                        width: column.width,
-                        minWidth: column.width,
-                        maxWidth: column.width
-                      }}
                     >
                       {column.subHeader ? (
-                        <div className='header-with-subHeader'>
-                          <div>{column.label}</div>
-                          <div className='subHeader'>
+                        <div className='rmdt-table-header-row-cell-subHeader'>
+                          <div className='rmdt-table-header-row-cell-subHeader-top'>
+                            {column.label}
+                          </div>
+                          <div className='rmdt-table-header-row-cell-subHeader-bottom'>
                             {column.subHeader.map((subCol, idx) => (
-                              <div className='subHeader-item' key={idx}>
+                              <div
+                                className='rmdt-table-header-row-cell-subHeader-bottom-item'
+                                key={idx}
+                              >
                                 {subCol.label}
                               </div>
                             ))}
                           </div>
                         </div>
                       ) : (
-                        column.label
+                        <div className='rmdt-table-header-row-cell-no-subHeader'>
+                          {column.label}
+                        </div>
                       )}
                     </TableCell>
                   )
@@ -247,57 +297,78 @@ function MUITable({
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            {rows.length > 0 ? (
-              getRows().map((row, idx) => {
-                return (
-                  <TableRow
-                    className={selected === idx ? 'selected' : ''}
-                    key={`${row._id}_${idx}`}
-                    hover
-                    tabIndex={-1}
-                    onClick={() => onClickRow(idx)}
-                  >
-                    {checkBox && (
-                      <TableCell padding='checkbox'>
-                        <Checkbox
-                          onClick={() => handleSelect(row._id)}
-                          checked={checked.indexOf(row._id) > -1 && true}
-                        />
-                      </TableCell>
-                    )}
-                    {columns.map(
-                      (column) =>
-                        isShowColumn(column) && renderTableCell(column, row)
-                    )}
-                  </TableRow>
-                );
-              })
-            ) : (
-              <TableRow hover role='checkbox' tabIndex={-1}>
-                <TableCell align='center' colSpan={10}>
-                  <EmptyData />
-                </TableCell>
-              </TableRow>
-            )}
+          <TableBody className='rmdt-table-body'>
+            {rows.length > 0
+              ? getRows().map((row, idx) => {
+                  return (
+                    <TableRow
+                      className={`rmdt-table-body-row ${
+                        selected === idx ? 'selected' : ''
+                      }`}
+                      key={`${row._id}_${idx}`}
+                      hover
+                      tabIndex={-1}
+                      onClick={() => onClickRow(idx)}
+                    >
+                      {checkBox && (
+                        <TableCell
+                          className='rmdt-table-body-row-cell checkBox'
+                          padding='checkbox'
+                        >
+                          <Checkbox
+                            onClick={() => handleSelect(row._id)}
+                            checked={checked.indexOf(row._id) > -1 || false}
+                          />
+                        </TableCell>
+                      )}
+                      {columns.map(
+                        (column) =>
+                          isShowColumn(column) && renderTableCell(column, row)
+                      )}
+                    </TableRow>
+                  );
+                })
+              : renderNoData()}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {pagination && rows.length > 0 && (
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component='div'
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      )}
+      {(count || pagination) && (
+        <div className='rmdt-dataTable-tool-row'>
+          {count && (
+            <div className='rmdt-dataTable-item-count'>
+              {others.labelItemCount
+                ? others.labelItemCount(items, rowsPerPage, page)
+                : renderItemCount(items, rowsPerPage, page)}
+            </div>
+          )}
 
-      {count && (
-        <div className='dataTable-item-count'>(총 {items.length} 건)</div>
+          {pagination && (
+            <div className='rmdt-dataTable-pagination'>
+              <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component='div'
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                labelDisplayedRows={() => {
+                  if (others.labelDisplayedRows) {
+                    return others.labelDisplayedRows({ page, rowsPerPage });
+                  } else {
+                    return renderPaginationInfo({ page, rowsPerPage });
+                  }
+                }}
+                labelRowsPerPage={
+                  others.labelRowsPerPage
+                    ? others.labelRowsPerPage({ rowsPerPage })
+                    : `${rowsPerPage} 개씩 보기`
+                }
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+              />
+            </div>
+          )}
+        </div>
       )}
     </Paper>
   );
