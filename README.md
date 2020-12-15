@@ -145,16 +145,20 @@ const DataTable = () => {
 
   return (
     <div
-      className='react-mui-data-table-container'
-      style={{ width: '1000px', height: '800px' }}
+      className='mui-data-table-container'
+      style={{ width: '1200px', height: '1000px', padding: '20px' }}
     >
       <MUITable
-        className='custom-react-mui-data-table'
-        customStyle={classes}
+        className='custom-mui-data-table'
+        // customStyle={classes}
+        checkBox={true}
         items={getItems()}
         columns={COLUMNS}
+        count={true}
+        pagination={true}
+        border={true}
         labelRowsPerPage={({ rowsPerPage }) =>
-          `Items in one page (${rowsPerPage})`
+          `한번에 보여줄 개수 (${rowsPerPage})`
         }
         labelItemCount={(items, rowsPerPage, page) => {
           return `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
@@ -164,6 +168,8 @@ const DataTable = () => {
         labelDisplayedRows={({ page, rowsPerPage }) =>
           `${page}, ${rowsPerPage}`
         }
+        onCheck={(selected) => console.log(selected)}
+        onCheckAll={(selected) => console.log(selected)}
         handleData={handleData}
       />
     </div>
@@ -175,6 +181,10 @@ export default DataTable;
 ```
 
 ## Version History
+Version 1.1.2
+Supporting
+border={true || false}
+
 Version 1.1.0
 Supporting
 - labelRowsPerPage

@@ -106,8 +106,6 @@ const DataTable = () => {
   const classes = useStyles();
 
   const getItems = () => {
-    return [];
-
     const items = [];
     for (let i = 0; i < 25; i++) {
       let o = {
@@ -142,18 +140,20 @@ const DataTable = () => {
         columns={COLUMNS}
         count={true}
         pagination={true}
-        // labelRowsPerPage={({ rowsPerPage }) =>
-        //   `한번에 보여줄 개수 (${rowsPerPage})`
-        // }
-        // labelItemCount={(items, rowsPerPage, page) => {
-        //   return `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
-        //     rowsPerPage * page + rowsPerPage
-        //   }`;
-        // }}
-        // labelRowsPerPage='한번에 보여줄 개수'
-        // labelDisplayedRows={({ page, rowsPerPage }) =>
-        //   `${page}, ${rowsPerPage}`
-        // }
+        border={true}
+        labelRowsPerPage={({ rowsPerPage }) =>
+          `한번에 보여줄 개수 (${rowsPerPage})`
+        }
+        labelItemCount={(items, rowsPerPage, page) => {
+          return `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
+            rowsPerPage * page + rowsPerPage
+          }`;
+        }}
+        labelDisplayedRows={({ page, rowsPerPage }) =>
+          `${page}, ${rowsPerPage}`
+        }
+        onCheck={(selected) => console.log(selected)}
+        onCheckAll={(selected) => console.log(selected)}
         handleData={handleData}
       />
     </div>

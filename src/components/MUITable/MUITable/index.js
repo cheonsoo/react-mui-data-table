@@ -23,6 +23,7 @@ function MUITable({
   selected = -1,
   count = true,
   pagination = true,
+  border = false,
   style = {},
   customStyle = null,
   checkBox = false,
@@ -32,7 +33,7 @@ function MUITable({
   handleData = () => {},
   ...others
 }) {
-  const classes = customStyle || useStyles();
+  const classes = customStyle || useStyles({ border })();
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -383,6 +384,7 @@ MUITable.propTypes = {
   count: PropTypes.bool,
   selected: PropTypes.number,
   pagination: PropTypes.bool,
+  border: PropTypes.bool,
   style: PropTypes.object,
   customStyle: PropTypes.func,
   onClickRow: PropTypes.func,
