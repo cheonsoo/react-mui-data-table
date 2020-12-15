@@ -119,17 +119,17 @@ const DataTable = () => {
         count={true} // {true || false}
         pagination={true} // {true || false}
         border={true} // {true || false}
-        // labelRowsPerPage={({ rowsPerPage }) =>
-        //   `Rows in one page (${rowsPerPage})`
-        // }
-        // labelItemCount={(items, rowsPerPage, page) =>
-        //   `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
-        //     rowsPerPage * page + rowsPerPage
-        //   }`
-        // }
-        // labelDisplayedRows={({ page, rowsPerPage }) =>
-        //   `${page}, ${rowsPerPage}`
-        // }
+        labelRowsPerPage={({ rowsPerPage }) =>
+          `Rows in one page (${rowsPerPage})`
+        }
+        labelItemCount={(items, rowsPerPage, page) =>
+          `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
+            rowsPerPage * page + rowsPerPage
+          }`
+        }
+        labelDisplayedRows={({ page, rowsPerPage }) =>
+          `${page}, ${rowsPerPage}`
+        }
         onCheck={(selected) => console.log(selected)}
         onCheckAll={(selected) => console.log(selected)}
         handleData={(row) => console.log(row)}

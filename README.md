@@ -24,13 +24,10 @@ import { MUITable } from 'mui-data-table';
 const customStyle = {
   width: '98%',
   '& .rmdt-table': {
-    backgroundColor: '#e9e9e9',
     width: '100%',
     height: '100%',
     boxShadow: 'none',
-    '& .MuiTable-root': {
-      backgroundColor: '#d9d9d9'
-    }
+    '& .MuiTable-root': {}
   }
 };
 
@@ -43,7 +40,17 @@ const COLUMNS = [
   {
     _id: 'col1',
     label: 'COL1',
-    width: 100
+    width: 100,
+    format: function (val) {
+      return (
+        <div
+          className='rmdt-cell-inner'
+          style={{ fontWeight: 'bold', color: '#2478FF' }}
+        >
+          {val}
+        </div>
+      );
+    }
   },
   {
     _id: 'col2',
@@ -69,7 +76,8 @@ const COLUMNS = [
     subHeader: [
       {
         _id: 'col4_1',
-        label: 'COL4_1'
+        label: 'COL4_1',
+        format: (val) => `${numberFormat(val)}$`
       },
       {
         _id: 'col4_2',
@@ -80,8 +88,22 @@ const COLUMNS = [
         label: 'COL4_3'
       }
     ]
+  },
+  {
+    _id: 'col5',
+    label: 'COL5',
+    width: 100,
+    format: (val) => numberFormat(val)
   }
 ];
+
+const numberFormat = (val) => {
+  if (this === 0) return 0;
+  const reg = /(^[+-]?\d+)(\d{3})/;
+  val = val.toString();
+  while (reg.test(val)) val = val.replace(reg, `$1,$2`);
+  return val;
+};
 
 const DataTable = () => {
   const getItems = () => {
@@ -93,9 +115,10 @@ const DataTable = () => {
         col2: `COL2 ${i}`,
         col3: `COL3 ${i}`,
         col4: `COL4 ${i}`,
-        col4_1: `COL4_1 ${i}`,
+        col4_1: parseInt(Math.random() * 10000),
         col4_2: `COL4_2 ${i}`,
-        col4_3: `COL4_3 ${i}`
+        col4_3: `COL4_3 ${i}`,
+        col5: parseInt(Math.random() * 10000000)
       };
       items.push(o);
     }
@@ -136,7 +159,6 @@ const DataTable = () => {
 };
 
 export default DataTable;
-
 ```
 
 ## Version History
