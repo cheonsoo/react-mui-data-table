@@ -197,7 +197,7 @@ function MUITable({
                 className='rmdt-table-body-row-cell-subHeader-item'
                 key={idx}
               >
-                {row[sub._id]}
+                {sub.format ? sub.format(row[sub._id]) : row[sub._id]}
               </div>
             ))}
           </div>
@@ -225,24 +225,14 @@ function MUITable({
   const renderItemCount = (items, rowsPerPage, page) => {
     return (
       <div>
-        전체 {items.length} 건 중 {rowsPerPage * page + 1} ~{' '}
-        {rowsPerPage * page + rowsPerPage}
+        Total {items.length} rows, {rowsPerPage * page + 1} ~{' '}
+        {rowsPerPage * page + rowsPerPage} rows
       </div>
     );
   };
 
-  // ({ page }) =>
-  //                 `${Math.ceil(items.length / rowsPerPage)} 페이지 중 ${
-  //                   page + 1
-  //                 }`
   const renderPaginationInfo = ({ page, rowsPerPage }) => {
-    return `${Math.ceil(items.length / rowsPerPage)} 페이지 중 ${page + 1}`;
-  };
-
-  const renderLabelRowsPerPage = ({ rowsPerPage }) => {
-    console.log(`### rowsPerPage: ${rowsPerPage}`);
-    // return <div>{rowsPerPage} 개씩 보기</div>;
-    return 'fjdksljfkljdksfljkl';
+    return `${page + 1} page of Total ${Math.ceil(items.length / rowsPerPage)}`;
   };
 
   return (
@@ -362,7 +352,7 @@ function MUITable({
                 labelRowsPerPage={
                   others.labelRowsPerPage
                     ? others.labelRowsPerPage({ rowsPerPage })
-                    : `${rowsPerPage} 개씩 보기`
+                    : `Rows in a page ${rowsPerPage}`
                 }
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
@@ -386,7 +376,7 @@ MUITable.propTypes = {
   pagination: PropTypes.bool,
   border: PropTypes.bool,
   style: PropTypes.object,
-  customStyle: PropTypes.func,
+  customStyle: PropTypes.object,
   onClickRow: PropTypes.func,
   onCheck: PropTypes.func,
   onCheckAll: PropTypes.func,

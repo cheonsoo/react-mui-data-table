@@ -5,7 +5,7 @@ Support row editing (Textbox & Combobox)
 
 [![NPM](https://img.shields.io/npm/v/mui-data-table.svg)](https://www.npmjs.com/package/mui-data-table) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![mui-data-table](https://user-images.githubusercontent.com/4275074/102190715-b6d41d80-3efb-11eb-9e78-0ecce6a821c6.png)
+![mui-data-table](https://user-images.githubusercontent.com/4275074/102222192-7342d900-3f26-11eb-8f0b-908b0dfc7aa4.png)
 ![mui-data-table](https://user-images.githubusercontent.com/4275074/102190733-bc316800-3efb-11eb-909a-859360c20fd6.png)
 ![mui-data-table](https://user-images.githubusercontent.com/4275074/102190745-c05d8580-3efb-11eb-9c3c-77026c14e6b5.png)
 
@@ -140,6 +140,10 @@ export default DataTable;
 ```
 
 ## Version History
+Version 1.1.5
+Supports
+React components format in columns.js
+
 Version 1.1.4
 Supports
 - customStyle={} // Will be added under 'rmdt class'. Write css in material ui style format.
