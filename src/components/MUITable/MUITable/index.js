@@ -25,7 +25,7 @@ function MUITable({
   pagination = true,
   border = false,
   style = {},
-  customStyle = null,
+  customStyle = {},
   checkBox = false,
   onClickRow = () => {},
   onCheck = () => {},
@@ -33,7 +33,7 @@ function MUITable({
   handleData = () => {},
   ...others
 }) {
-  const classes = customStyle || useStyles({ border })();
+  const classes = useStyles({ border, customStyle })();
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);

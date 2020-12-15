@@ -20,58 +20,19 @@ npm install --save react-mui-data-table
 ```jsx
 import React from 'react';
 import { MUITable } from 'mui-data-table';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-  root: {
+const customStyle = {
+  width: '98%',
+  '& .rmdt-table': {
+    backgroundColor: '#e9e9e9',
     width: '100%',
     height: '100%',
     boxShadow: 'none',
     '& .MuiTable-root': {
-      '& .MuiTableHead-root': {
-        '& .MuiTableRow-root': {
-          '& .MuiTableCell-head': {
-            '& .header-with-subHeader .subHeader': {
-              display: 'flex',
-              '& div': {
-                width: '100%'
-              }
-            }
-          }
-        }
-      },
-      '& .MuiTableBody-root .MuiTableRow-root .MuiTableCell-root': {
-        textAlign: 'center',
-        padding: '3px',
-        '& .row-with-subHeader': {
-          display: 'flex',
-          '& .row-col': {
-            width: '100%'
-          }
-        }
-      }
-    },
-    '& .MuiTablePagination-root': {
-      '& > div': {
-        border: '1px solid #e8e8e8',
-        borderRadius: '0'
-      }
-    }
-  },
-  container: {
-    border: '1px solid #e8e8e8',
-    maxHeight: '100%',
-    '& table': {
-      borderRadius: 0,
-      '& thead': {
-        borderRadius: 0,
-        '& th': {
-          textAlign: 'center'
-        }
-      }
+      backgroundColor: '#d9d9d9'
     }
   }
-});
+};
 
 const COLUMNS = [
   {
@@ -123,11 +84,9 @@ const COLUMNS = [
 ];
 
 const DataTable = () => {
-  const classes = useStyles();
-
   const getItems = () => {
     const items = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 25; i++) {
       let o = {
         _id: `ID ${i}`,
         col1: `COL1 ${i}`,
@@ -143,38 +102,34 @@ const DataTable = () => {
     return items;
   };
 
-  const handleData = (data) => {
-    console.log(data);
-  };
-
   return (
     <div
-      className='mui-data-table-container'
+      className='react-mui-data-table-container'
       style={{ width: '1200px', height: '1000px', padding: '20px' }}
     >
       <MUITable
-        className='custom-mui-data-table'
-        // customStyle={classes}
-        checkBox={true}
+        className='custom-style-rmdt' // You can import css file and force it to be applied to the css
+        customStyle={customStyle} // This will be added under the rmdt class
         items={getItems()}
         columns={COLUMNS}
-        count={true}
-        pagination={true}
-        border={true}
+        checkBox={true} // {true || false}
+        count={true} // {true || false}
+        pagination={true} // {true || false}
+        border={true} // {true || false}
         labelRowsPerPage={({ rowsPerPage }) =>
-          `한번에 보여줄 개수 (${rowsPerPage})`
+          `Rows in one page (${rowsPerPage})`
         }
-        labelItemCount={(items, rowsPerPage, page) => {
-          return `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
+        labelItemCount={(items, rowsPerPage, page) =>
+          `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
             rowsPerPage * page + rowsPerPage
-          }`;
-        }}
+          }`
+        }
         labelDisplayedRows={({ page, rowsPerPage }) =>
           `${page}, ${rowsPerPage}`
         }
         onCheck={(selected) => console.log(selected)}
         onCheckAll={(selected) => console.log(selected)}
-        handleData={handleData}
+        handleData={(row) => console.log(row)}
       />
     </div>
   );
@@ -185,12 +140,16 @@ export default DataTable;
 ```
 
 ## Version History
+Version 1.1.4
+Supports
+- customStyle={} // Will be added under 'rmdt class'. Write css in material ui style format.
+
 Version 1.1.2
-Supporting
+Supports
 border={true || false}
 
 Version 1.1.0
-Supporting
+Supports
 - labelRowsPerPage
 - labelItemCount
 - labelDisplayedRows

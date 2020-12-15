@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = ({ border }) =>
+const useStyles = ({ border, customStyle }) =>
   makeStyles({
     rmdt: {
       width: '100%',
@@ -107,7 +107,8 @@ const useStyles = ({ border }) =>
             border: 0
           }
         }
-      }
+      },
+      ...customStyle
     }
   });
 
