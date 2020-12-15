@@ -145,14 +145,25 @@ const DataTable = () => {
 
   return (
     <div
-      className='mui-data-table-container'
-      style={{ width: '1200px', height: '400px' }}
+      className='react-mui-data-table-container'
+      style={{ width: '1000px', height: '800px' }}
     >
       <MUITable
-        className='custom-mui-data-table'
+        className='custom-react-mui-data-table'
         customStyle={classes}
         items={getItems()}
         columns={COLUMNS}
+        labelRowsPerPage={({ rowsPerPage }) =>
+          `Items in one page (${rowsPerPage})`
+        }
+        labelItemCount={(items, rowsPerPage, page) => {
+          return `Total: ${items.length}, ${rowsPerPage * page + 1} ~ ${
+            rowsPerPage * page + rowsPerPage
+          }`;
+        }}
+        labelDisplayedRows={({ page, rowsPerPage }) =>
+          `${page}, ${rowsPerPage}`
+        }
         handleData={handleData}
       />
     </div>
@@ -162,6 +173,13 @@ const DataTable = () => {
 export default DataTable;
 
 ```
+
+## Version History
+Version 1.1.0
+Supporting
+- labelRowsPerPage
+- labelItemCount
+- labelDisplayedRows
 
 ## License
 
