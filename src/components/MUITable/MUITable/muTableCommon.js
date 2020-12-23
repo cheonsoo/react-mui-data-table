@@ -55,7 +55,6 @@ const useStyles = ({ border, customStyle }) =>
               '& .rmdt-table-body-row-cell': {
                 borderRight: border ? '1px solid #e7e7e7' : 0,
                 padding: 0,
-                // lineHeight: 0,
                 '& .rmdt-table-body-row-cell-item': {
                   width: '100%',
                   height: '100%',

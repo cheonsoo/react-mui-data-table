@@ -162,20 +162,28 @@ export default DataTable;
 ```
 
 ## Version History
+Version 1.1.8
+New Features
+- Checkbox Single Selection
+
+Version 1.1.7
+Bug Fix
+- When using format with ComboBox
+
 Version 1.1.5
-Supports
-React components format in columns.js
+New Features
+- React components format in columns.js
 
 Version 1.1.4
-Supports
+New Features
 - customStyle={} // Will be added under 'rmdt class'. Write css in material ui style format.
 
 Version 1.1.2
-Supports
-border={true || false}
+New Features
+- border={true || false}
 
 Version 1.1.0
-Supports
+New Features
 - labelRowsPerPage
 - labelItemCount
 - labelDisplayedRows

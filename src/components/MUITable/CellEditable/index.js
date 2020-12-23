@@ -32,7 +32,7 @@ export default function CellEditable({
   }, [value]);
 
   const handleChange = (evt) => {
-    let val = evt.target.value;
+    const val = evt.target.value;
 
     if (type === 'number') {
       if (others.maxLength && val.length > others.maxLength) return;
@@ -51,12 +51,6 @@ export default function CellEditable({
 
   const handleKeyUp = (evt) => {
     if (evt.keyCode === 13) {
-      // Enter
-      // setEdit(false);
-
-      // if (!nullCheck()) return;
-
-      // if (handleData) handleData(editing);
       setEdited();
     }
 
@@ -82,7 +76,7 @@ export default function CellEditable({
 
   const viewMode = (
     <div className='editable-cell-viewMode'>
-      <Tooltip title={value ? value : ''}>
+      <Tooltip title={value || ''}>
         <div onClick={handleClick}>
           <p>{format(value)}</p>
         </div>

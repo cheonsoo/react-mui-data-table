@@ -13,6 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CellEditable from '../CellEditable';
 import CellComboBox from '../CellComboBox';
 import EmptyData from '../../common/EmptyData';
+import TablePaginationActions from './TablePaginationActions';
 
 import useStyles from './muTableCommon.js';
 
@@ -27,6 +28,8 @@ function MUITable({
   style = {},
   customStyle = {},
   checkBox = false,
+  singleSelection = true,
+  actionsComponent = null,
   onClickRow = () => {},
   onCheck = () => {},
   onCheckAll = () => {},
@@ -42,6 +45,7 @@ function MUITable({
   const [isChkAll, setIsChkAll] = useState(false);
 
   useEffect(() => {
+    if (items.length === 0) setPage(0);
     setRows(items);
   }, [items]);
 
@@ -57,14 +61,23 @@ function MUITable({
     setRowsPerPage(_rowsPerPage);
     setPage(_page);
     setRows(_items);
-
-    // if (pagination) setRows(_items.slice(_page * _rowsPerPage, _page * _rowsPerPage + _rowsPerPage));
-    // else setRows(_items);
   };
 
   const handleSelect = (rowId) => {
+    // Single Select
+    if (singleSelection) {
+      if (checked.indexOf(rowId) > -1) {
+        setChecked([]);
+        onCheck([]);
+      } else {
+        setChecked(rowId);
+        onCheck(rowId);
+      }
+      return;
+    }
+
+    // Multi Select
     let _checked;
-    console.log(rowId);
     if (checked.indexOf(rowId) > -1) {
       _checked = checked.filter((id) => id !== rowId);
     } else {
@@ -156,18 +169,22 @@ function MUITable({
       try {
         const COMBOBOX_ITEMS = _column.items;
         return (
-          <div className='rmdt-table-body-row-cell-item'>
-            <CellComboBox
-              value={_value}
-              column={_column}
-              items={COMBOBOX_ITEMS}
-              row={_row}
-              handleData={(data) => {
-                _row[_column._id] = data.key;
-                handleData(row);
-              }}
-            />
-          </div>
+          <CellComboBox
+            value={_row[_column._id]}
+            column={_column}
+            items={COMBOBOX_ITEMS}
+            row={_row}
+            format={
+              _column.format ||
+              function (val) {
+                return val;
+              }
+            }
+            handleData={(data) => {
+              _row[_column._id] = data.key;
+              handleData(row);
+            }}
+          />
         );
       } catch (e) {
         console.log(e);
@@ -209,12 +226,15 @@ function MUITable({
   };
 
   const renderNoData = () => {
+    let colSpan = Object.keys(columns).length;
+    if (checkBox) ++colSpan;
+
     return (
       <TableRow hover role='checkbox' tabIndex={-1}>
         <TableCell
           className='rmdt-row-no-data'
           align='center'
-          colSpan={Object.keys(columns).length}
+          colSpan={colSpan}
         >
           <EmptyData />
         </TableCell>
@@ -246,11 +266,13 @@ function MUITable({
                   className='rmdt-table-header-row-cell checkBox'
                   padding='checkbox'
                 >
-                  <Checkbox
-                    checked={isChkAll}
-                    onClick={() => onSelectAllClick(!isChkAll)}
-                    inputProps={{ 'aria-label': 'select all desserts' }}
-                  />
+                  {!singleSelection && (
+                    <Checkbox
+                      checked={isChkAll}
+                      onClick={() => onSelectAllClick(!isChkAll)}
+                      inputProps={{ 'aria-label': 'select all desserts' }}
+                    />
+                  )}
                 </TableCell>
               )}
               {columns.map(
@@ -354,6 +376,7 @@ function MUITable({
                     ? others.labelRowsPerPage({ rowsPerPage })
                     : `Rows in a page ${rowsPerPage}`
                 }
+                ActionsComponent={actionsComponent || TablePaginationActions}
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
               />
@@ -368,6 +391,7 @@ function MUITable({
 MUITable.propTypes = {
   className: PropTypes.string,
   checkBox: PropTypes.bool,
+  singleSelection: PropTypes.bool,
   items: PropTypes.array,
   headerColumns: PropTypes.array,
   columns: PropTypes.array,
@@ -377,6 +401,7 @@ MUITable.propTypes = {
   border: PropTypes.bool,
   style: PropTypes.object,
   customStyle: PropTypes.object,
+  actionsComponent: PropTypes.object,
   onClickRow: PropTypes.func,
   onCheck: PropTypes.func,
   onCheckAll: PropTypes.func,

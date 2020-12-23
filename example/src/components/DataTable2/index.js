@@ -113,6 +113,7 @@ const DataTable = () => {
       <MUITable
         className='custom-style-rmdt' // You can import css file and force it to be applied to the css
         customStyle={customStyle} // This will be added under the rmdt class
+        // items={[]}
         items={getItems()}
         columns={COLUMNS}
         checkBox={true} // {true || false}
